@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thuật toán Robinson</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Thuật toán Robinson</h1>
+        <form id="expression-form">
+            <label for="hypotheses">Giả thuyết (ngăn cách bằng dấu phẩy):</label>
+            <input type="text" name="hypotheses" placeholder="Nhập giả thuyết...">
+
+            <label for="conclusion">Kết luận:</label>
+            <input type="text" name="conclusion" placeholder="Nhập kết luận..." required>
+
+            <button type="submit">Giải</button>
+        </form>
+
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.getElementById('expression-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/process', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+                data.steps.forEach(step => {
+                    const stepElement = document.createElement('p');
+                    stepElement.textContent = step;
+                    resultsDiv.appendChild(stepElement);
+                });
+                if (data.proved) {
+                    resultsDiv.innerHTML += '<strong>Kết luận: Bài toán được chứng minh.</strong>';
+                } else {
+                    resultsDiv.innerHTML += '<strong>Kết luận: Bài toán bị bác bỏ.</strong>';
+                }
+            })
+            .catch(error => console.error('Lỗi:', error));
+        });
+    </script>
+</body>
+</html>

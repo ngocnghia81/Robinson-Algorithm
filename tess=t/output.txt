@@ -1,0 +1,11 @@
+A&B
+A|B,~B|C,~C|D,~D|E,E|F,F,~A|~B
+~D|E,~C|D->E|~C
+~B|C,~C|D->~B|D
+~B|C,A|B->C|A
+~A|~B,C|A->~B|C
+~D|E,~B|D->E|~B
+~B|C,E|~C->~B|E
+~C|D,C|A->D|A
+E|~C,C|A->E|A
+False 
